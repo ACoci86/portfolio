@@ -1,0 +1,40 @@
+---
+import "../styles/global.css";
+
+const {
+  title = "AC | Software Developer",
+  description = "Alessio Coci - aspiring software developer portfolio.",
+} = Astro.props;
+
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+
+  <body>
+    <header>
+      <a class="brand" href="/">AC</a>
+      <nav aria-label="Primary navigation">
+        <a href="/#about">About</a>
+        <a href="/projects">Projects</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <slot />
+    </main>
+
+    <footer id="contact">
+      <p>© {year} Alessio Coci</p>
+      <a href="mailto:hello@example.com">hello@example.com</a>
+    </footer>
+  </body>
+</html>

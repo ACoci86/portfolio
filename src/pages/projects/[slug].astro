@@ -1,0 +1,44 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+
+// One page per project file. `id` is the filename without .md (the slug).
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const formattedDate = project.data.date.toLocaleDateString("en-GB", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<Base title={`${project.data.title} | Alessio Coci`} description={project.data.description}>
+  <article class="write-up">
+    <a href="/projects">← All projects</a>
+    <h1>{project.data.title}</h1>
+    <p class="meta">
+      <time datetime={project.data.date.toISOString()}>{formattedDate}</time>
+      {
+        project.data.repo && (
+          <>
+            {" · "}
+            <a href={project.data.repo} target="_blank" rel="noreferrer">
+              Source ↗
+            </a>
+          </>
+        )
+      }
+    </p>
+
+    <Content />
+  </article>
+</Base>

@@ -1,0 +1,34 @@
+# Pages CMS configuration — https://pagescms.org/docs/configuration/
+# Describes the same content that src/content.config.ts and the project
+# Markdown files describe, so the CMS knows what forms to show.
+
+media:
+  input: public/images # where uploaded images are saved in the repo
+  output: /images # the URL those images are served at
+
+content:
+  - name: projects
+    label: Projects
+    type: collection # a list you can add to / remove from
+    path: src/content/projects
+    filename: "{fields.title}.md" # new entries get a slug from the title
+    view:
+      fields: [title, date] # columns shown in the CMS list view
+      sort: [date]
+    fields:
+      - name: title
+        label: Title
+        type: string
+      - name: date
+        label: Date
+        type: date
+      - name: description
+        label: Description
+        type: text
+      - name: repo
+        label: Repository URL
+        type: string
+        required: false
+      - name: body
+        label: Write-up
+        type: rich-text # the Markdown body below the frontmatter
