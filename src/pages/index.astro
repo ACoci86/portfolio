@@ -2,30 +2,44 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 
+// Each service carries a small inline icon (Feather-style SVG paths).
 const services = [
   {
-    title: "Web Development",
+    title: "Full-Stack Web",
     description:
-      "Building responsive websites and web applications with modern technologies.",
+      "Responsive web apps with TypeScript, Angular, Node and Express. Clean, accessible and mobile-first.",
+    icon: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
   },
   {
-    title: "Software Solutions",
+    title: "Mobile Development",
     description:
-      "Creating efficient solutions that solve real-world problems with clean code.",
+      "Cross-platform mobile apps built with Capacitor and modern web tooling.",
+    icon: '<rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>',
   },
   {
     title: "Backend & APIs",
     description:
-      "Designing reliable APIs and working with databases and server-side logic.",
+      "REST APIs, serverless Cloudflare Functions and Git-based content workflows.",
+    icon: '<rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>',
   },
   {
-    title: "Deploy & Maintain",
+    title: "QA & Testing",
     description:
-      "Deploying applications and keeping them fast, secure, and dependable.",
+      "Manual and Java-based testing, debugging and structured validation workflows.",
+    icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
   },
 ];
 
-const technologies = ["JS", "TS", "Astro", "CSS", "Node", "Java", "SQL", "Git"];
+const technologies = [
+  { name: "Java", icon: "/icons/java.svg" },
+  { name: "TypeScript", icon: "/icons/typescript.svg" },
+  { name: "JavaScript", icon: "/icons/javascript.svg" },
+  { name: "Angular", icon: "/icons/angular.svg" },
+  { name: "Node", icon: "/icons/nodejs.svg" },
+  { name: "Express", icon: "/icons/express.svg" },
+  { name: "SQL", icon: "/icons/sql.svg" },
+  { name: "Git", icon: "/icons/git.svg" },
+];
 
 // Show the three most recent projects on the homepage.
 const featured = (await getCollection("projects"))
@@ -35,20 +49,30 @@ const featured = (await getCollection("projects"))
 
 <Base>
   <section class="intro">
-    <h1>I'm Alessio.</h1>
+    <h1>Hi, I'm Alessio.</h1>
     <p>
-      I build modern web applications and enjoy turning ideas into clean,
-      functional code. Always learning. Always building.
+      Junior software developer and First Class Honours Level 8 graduate. I build
+      full-stack web and mobile apps, turning ideas into clean, reliable code.
     </p>
     <a class="button" href="/projects">View my work</a>
   </section>
 
   <section id="about">
     <h2>What I do</h2>
-    <div class="grid">
+    <div class="grid grid-2">
       {
         services.map((service) => (
-          <article>
+          <article class="service">
+            <svg
+              class="service-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              set:html={service.icon}
+            />
             <h3>{service.title}</h3>
             <p>{service.description}</p>
           </article>
@@ -60,7 +84,14 @@ const featured = (await getCollection("projects"))
   <section>
     <h2>Tech I work with</h2>
     <ul class="tech">
-      {technologies.map((technology) => <li>{technology}</li>)}
+      {
+        technologies.map((technology) => (
+          <li>
+            <img src={technology.icon} alt={technology.name} width="40" height="40" />
+            <span>{technology.name}</span>
+          </li>
+        ))
+      }
     </ul>
   </section>
 

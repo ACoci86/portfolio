@@ -2,8 +2,9 @@
 import "../styles/global.css";
 
 const {
-  title = "AC | Software Developer",
-  description = "Alessio Coci - aspiring software developer portfolio.",
+  title = "Alessio Coci | Junior Software Developer",
+  description =
+    "Alessio Coci. First Class Honours Level 8 Software Development graduate. Full-stack web & mobile, backend APIs and QA.",
 } = Astro.props;
 
 const year = new Date().getFullYear();
@@ -34,7 +35,13 @@ const year = new Date().getFullYear();
 
     <footer id="contact">
       <p>© {year} Alessio Coci</p>
-      <a href="mailto:hello@example.com">hello@example.com</a>
+      <p>
+        <a href="mailto:alessiococi1986@gmail.com">alessiococi1986@gmail.com</a>
+        {" · "}
+        <a href="https://github.com/ACoci86" target="_blank" rel="noreferrer">
+          GitHub
+        </a>
+      </p>
     </footer>
   </body>
 </html>

@@ -1,7 +1,11 @@
 :root {
-  --ink: #090909;
+  --ink: #1a1a1a;
+  --muted: #6b6b6b;
   --background: #ffffff;
-  --max-width: 800px;
+  --border: #e7e7e7;
+  --accent: #4f46e5;
+  --radius: 14px;
+  --max-width: 840px;
 }
 
 * {
@@ -23,14 +27,22 @@ a {
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 2.6rem;
+  line-height: 1.15;
   margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
 }
 
 h2 {
   margin-top: 3rem;
+  letter-spacing: -0.01em;
 }
 
+.muted {
+  color: var(--muted);
+}
+
+/* Header */
 header {
   display: flex;
   justify-content: space-between;
@@ -51,78 +63,162 @@ nav {
   gap: 1.5rem;
 }
 
+nav a {
+  text-decoration: none;
+  color: var(--muted);
+  transition: color 0.15s ease;
+}
+
+nav a:hover {
+  color: var(--ink);
+}
+
+/* Intro */
 .intro {
-  padding: 2rem 0;
+  padding: 2.5rem 0;
+}
+
+.intro p {
+  font-size: 1.15rem;
+  color: var(--muted);
+  max-width: 60ch;
 }
 
 .button {
   display: inline-block;
-  margin-top: 1rem;
-  padding: 0.6rem 1.2rem;
-  border: 2px solid var(--ink);
-  font-weight: 700;
+  margin-top: 1.25rem;
+  padding: 0.7rem 1.4rem;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
   text-decoration: none;
-  border-radius: 7px;
+  border-radius: 999px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
+.button:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+/* Cards */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
 }
 
 .grid article {
-  padding: 1.25rem;
-  border: 2px solid var(--ink);
+  padding: 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.grid article:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+  transform: translateY(-2px);
 }
 
 .grid h3 {
   margin: 0 0 0.5rem;
 }
 
-/* Uniform card thumbnails: same size, cropped to fill, regardless of source image. */
+.grid article a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Two-up layout for the "What I do" cards */
+@media (min-width: 560px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.service-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.service h3 {
+  margin: 0 0 0.4rem;
+}
+
+.service p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .card-image {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  margin: -1.25rem -1.25rem 1rem; /* bleed to the card's border edges */
-  width: calc(100% + 2.5rem);
+  border-radius: 10px;
+  margin-bottom: 1rem;
 }
 
+/* Tech icons */
 .tech {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1rem;
+  gap: 1.75rem;
+  margin-top: 1.5rem;
   padding: 0;
   list-style: none;
 }
 
 .tech li {
-  padding: 0.4rem 0.8rem;
-  border: 2px solid var(--ink);
-  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 64px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
 }
 
+.tech img {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.15s ease;
+}
+
+.tech li:hover img {
+  transform: translateY(-3px);
+}
+
+/* Footer */
 footer {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 4rem;
+  margin-top: 5rem;
   padding: 2rem 0;
-  border-top: 2px solid var(--ink);
+  border-top: 1px solid var(--border);
+  color: var(--muted);
 }
 
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* Write-up page */
 .write-up {
-  max-width: 640px;
+  max-width: 680px;
 }
 
 .write-up .meta {
-  margin-top: -0.5rem;
-  opacity: 0.7;
+  margin-top: -0.25rem;
+  color: var(--muted);
   font-size: 0.9rem;
 }
 
@@ -131,6 +227,6 @@ footer {
   width: 100%;
   max-height: 420px;
   object-fit: cover;
+  border-radius: var(--radius);
   margin: 1.5rem 0;
-  border: 2px solid var(--ink);
 }
