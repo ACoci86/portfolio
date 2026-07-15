@@ -9,6 +9,7 @@ const projects = defineCollection({
     date: z.date(),
     description: z.string(),
     repo: z.string().url().optional(),
+    image: z.string().optional(), // e.g. "/images/daisy.jpg" (lives in public/)
   }),
 });
 

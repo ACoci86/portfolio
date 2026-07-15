@@ -25,6 +25,11 @@ const formattedDate = project.data.date.toLocaleDateString("en-GB", {
   <article class="write-up">
     <a href="/projects">← All projects</a>
     <h1>{project.data.title}</h1>
+    {
+      project.data.image && (
+        <img class="write-up-image" src={project.data.image} alt={project.data.title} />
+      )
+    }
     <p class="meta">
       <time datetime={project.data.date.toISOString()}>{formattedDate}</time>
       {

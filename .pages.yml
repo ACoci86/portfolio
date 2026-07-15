@@ -29,6 +29,10 @@ content:
         label: Repository URL
         type: string
         required: false
+      - name: image
+        label: Featured image
+        type: image # upload/picker; saves to public/images, stores /images/... path
+        required: false
       - name: body
         label: Write-up
         type: rich-text # the Markdown body below the frontmatter

@@ -81,6 +81,16 @@ nav {
   margin: 0 0 0.5rem;
 }
 
+/* Uniform card thumbnails: same size, cropped to fill, regardless of source image. */
+.card-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin: -1.25rem -1.25rem 1rem; /* bleed to the card's border edges */
+  width: calc(100% + 2.5rem);
+}
+
 .tech {
   display: flex;
   flex-wrap: wrap;
@@ -114,4 +124,13 @@ footer {
   margin-top: -0.5rem;
   opacity: 0.7;
   font-size: 0.9rem;
+}
+
+.write-up-image {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  margin: 1.5rem 0;
+  border: 2px solid var(--ink);
 }

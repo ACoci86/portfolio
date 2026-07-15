@@ -17,6 +17,11 @@ const projects = (await getCollection("projects")).sort(
       {
         projects.map((project) => (
           <article>
+            {project.data.image && (
+              <a href={`/projects/${project.id}`}>
+                <img class="card-image" src={project.data.image} alt={project.data.title} />
+              </a>
+            )}
             <h3>
               <a href={`/projects/${project.id}`}>{project.data.title}</a>
             </h3>
