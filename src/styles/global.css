@@ -1,11 +1,34 @@
+/* Self-hosted so every visitor sees the same thing, regardless of their OS.
+   Variable font: one file covers weights 100 to 800. OFL licensed. */
+@font-face {
+  font-family: "Pixelify Sans";
+  src: url("/fonts/pixelify-sans.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --ink: #1a1a1a;
   --muted: #6b6b6b;
   --background: #ffffff;
   --border: #e7e7e7;
-  --accent: #4f46e5;
-  --radius: 14px;
-  --max-width: 840px;
+
+  /* Palette sampled straight from the logo */
+  --purple: #7a59d0;
+  --purple-light: #a989ec;
+  --teal: #66ceb1;
+  --yellow: #fec132;
+  --coral: #f76463;
+  --orange: #fd8b0f;
+
+  --accent: var(--purple);
+  --radius: 4px; /* small, so edges stay blocky like the logo */
+  --max-width: 1280px;
+
+  /* Pixel display face, used for headings and nav only. Fallbacks apply for the
+     moment before the file loads, or if it fails. */
+  --display: "Pixelify Sans", ui-monospace, "Liberation Mono", monospace;
 }
 
 * {
@@ -26,20 +49,91 @@ a {
   color: inherit;
 }
 
-h1 {
-  font-size: 2.6rem;
-  line-height: 1.15;
-  margin: 0 0 0.5rem;
+h1,
+h2,
+h3 {
+  font-family: var(--display);
   letter-spacing: -0.02em;
 }
 
-h2 {
-  margin-top: 3rem;
-  letter-spacing: -0.01em;
+h1 {
+  font-size: 2.5rem;
+  line-height: 1.15;
+  margin: 0 0 0.5rem;
 }
 
-.muted {
-  color: var(--muted);
+h2 {
+  margin-top: 3.5rem;
+}
+
+/* Section headings sit centred, with their pixel bar centred underneath. */
+section > h2 {
+  text-align: center;
+}
+
+/* Four coloured blocks under each section heading, echoing the logo. */
+.pixel-bar {
+  display: flex;
+  width: 48px;
+  margin: 0.6rem auto 0;
+}
+
+.pixel-bar span {
+  width: 12px;
+  height: 8px;
+}
+
+.pixel-bar span:nth-child(1) {
+  background: var(--purple);
+}
+.pixel-bar span:nth-child(2) {
+  background: var(--teal);
+}
+.pixel-bar span:nth-child(3) {
+  background: var(--yellow);
+}
+.pixel-bar span:nth-child(4) {
+  background: var(--coral);
+}
+
+/* Only hide the blocks up front if JS is around to drop them back in.
+   Without JS the bar just renders normally. */
+.js .pixel-bar span {
+  opacity: 0;
+}
+
+.js .pixel-bar.is-visible span {
+  animation: pixel-drop 0.3s steps(4) forwards;
+}
+
+/* Stagger them so they land one after another rather than as a slab. */
+.js .pixel-bar.is-visible span:nth-child(2) {
+  animation-delay: 0.09s;
+}
+.js .pixel-bar.is-visible span:nth-child(3) {
+  animation-delay: 0.18s;
+}
+.js .pixel-bar.is-visible span:nth-child(4) {
+  animation-delay: 0.27s;
+}
+
+@keyframes pixel-drop {
+  from {
+    opacity: 1;
+    transform: translateY(-26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect users who ask for less motion: show the bar, skip the drop. */
+@media (prefers-reduced-motion: reduce) {
+  .js .pixel-bar span {
+    opacity: 1;
+    animation: none;
+  }
 }
 
 /* Header */
@@ -53,24 +147,58 @@ header {
 }
 
 .brand {
-  font-weight: 700;
-  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
   text-decoration: none;
+}
+
+.brand .logo {
+  height: 45px;
+  width: auto;
+  display: block;
+}
+
+/* The monogram builds itself on load: blocks fall in from above and stack up
+   from the bottom row, like Tetris. The SVG clips anything above its top edge,
+   so blocks appear to drop in from off-screen. Pure CSS, so it runs even if JS
+   never loads. Per-block delays are set inline by Logo.astro. */
+.logo rect {
+  animation: logo-drop 0.34s steps(4) backwards;
+}
+
+@keyframes logo-drop {
+  from {
+    transform: translateY(-600px); /* user units, far enough to clear the top */
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo rect {
+    animation: none;
+  }
 }
 
 nav {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.25rem;
+  font-family: var(--display);
+  font-size: 0.9rem;
 }
 
 nav a {
   text-decoration: none;
   color: var(--muted);
-  transition: color 0.15s ease;
+  padding-bottom: 3px;
+  border-bottom: 3px solid transparent;
+  transition: color 0.1s steps(2), border-color 0.1s steps(2);
 }
 
 nav a:hover {
   color: var(--ink);
+  border-bottom-color: var(--accent);
 }
 
 /* Intro */
@@ -81,24 +209,79 @@ nav a:hover {
 .intro p {
   font-size: 1.15rem;
   color: var(--muted);
-  max-width: 60ch;
 }
 
+/* About */
+.about p {
+  color: var(--muted);
+}
+
+.facts {
+  list-style: none;
+  padding: 0;
+  margin: 1.75rem 0 0;
+  display: grid;
+  gap: 0.6rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* Two columns so a wrapping value stays lined up under itself,
+   rather than falling back to the left margin. */
+.facts li {
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.facts strong {
+  color: var(--ink);
+}
+
+@media (max-width: 480px) {
+  .facts li {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+/* Blocky button with a hard shadow that depresses when clicked */
 .button {
   display: inline-block;
-  margin-top: 1.25rem;
   padding: 0.7rem 1.4rem;
   background: var(--accent);
   color: #fff;
-  font-weight: 600;
+  font-family: var(--display);
+  font-weight: 700;
   text-decoration: none;
-  border-radius: 999px;
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
 }
 
 .button:hover {
-  transform: translateY(-1px);
-  opacity: 0.92;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.button:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--ink);
+}
+
+/* Secondary action. Dark text, because white on this teal is unreadable. */
+.button-alt {
+  background: var(--teal);
+  color: var(--ink);
 }
 
 /* Cards */
@@ -111,14 +294,15 @@ nav a:hover {
 
 .grid article {
   padding: 1.4rem;
-  border: 1px solid var(--border);
+  background: var(--background);
+  border: 2px solid var(--ink);
   border-radius: var(--radius);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
 }
 
 .grid article:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
-  transform: translateY(-2px);
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--accent);
 }
 
 .grid h3 {
@@ -128,7 +312,17 @@ nav a:hover {
 .grid article a {
   color: var(--accent);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Standalone links under a section, e.g. "All projects" */
+section > p > a {
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 3px solid var(--accent);
 }
 
 /* Two-up layout for the "What I do" cards */
@@ -141,7 +335,6 @@ nav a:hover {
 .service-icon {
   width: 28px;
   height: 28px;
-  color: var(--accent);
   margin-bottom: 0.75rem;
 }
 
@@ -154,20 +347,49 @@ nav a:hover {
   color: var(--muted);
 }
 
+/* Each service card gets its own logo colour */
+.grid-2 article:nth-child(1) .service-icon {
+  color: var(--purple);
+}
+.grid-2 article:nth-child(2) .service-icon {
+  color: var(--teal);
+}
+.grid-2 article:nth-child(3) .service-icon {
+  color: var(--orange);
+}
+.grid-2 article:nth-child(4) .service-icon {
+  color: var(--coral);
+}
+
+.grid-2 article:nth-child(1):hover {
+  box-shadow: 6px 6px 0 var(--purple);
+}
+.grid-2 article:nth-child(2):hover {
+  box-shadow: 6px 6px 0 var(--teal);
+}
+.grid-2 article:nth-child(3):hover {
+  box-shadow: 6px 6px 0 var(--yellow);
+}
+.grid-2 article:nth-child(4):hover {
+  box-shadow: 6px 6px 0 var(--coral);
+}
+
 .card-image {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  border-radius: 10px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
   margin-bottom: 1rem;
 }
 
-/* Tech icons */
+/* Tech icons, each in its own blocky tile */
 .tech {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.75rem;
+  justify-content: center;
+  gap: 0.9rem;
   margin-top: 1.5rem;
   padding: 0;
   list-style: none;
@@ -178,20 +400,23 @@ nav a:hover {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  width: 64px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--muted);
+  width: 84px;
+  padding: 0.8rem 0.4rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
 }
 
 .tech img {
-  width: 40px;
-  height: 40px;
-  transition: transform 0.15s ease;
+  width: 36px;
+  height: 36px;
 }
 
-.tech li:hover img {
-  transform: translateY(-3px);
+.tech li:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--accent);
 }
 
 /* Footer */
@@ -202,13 +427,37 @@ footer {
   gap: 1rem;
   margin-top: 5rem;
   padding: 2rem 0;
-  border-top: 1px solid var(--border);
+  border-top: 3px solid var(--ink);
   color: var(--muted);
+  font-size: 0.9rem;
 }
 
 footer a {
   color: var(--accent);
   text-decoration: none;
+  font-weight: 700;
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+}
+
+.social a {
+  display: flex;
+  transition: transform 0.1s steps(2), color 0.1s steps(2);
+}
+
+.social a:hover {
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.social-icon {
+  width: 22px;
+  height: 22px;
 }
 
 /* Write-up page */
@@ -219,7 +468,7 @@ footer a {
 .write-up .meta {
   margin-top: -0.25rem;
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .write-up-image {
@@ -227,6 +476,7 @@ footer a {
   width: 100%;
   max-height: 420px;
   object-fit: cover;
+  border: 2px solid var(--ink);
   border-radius: var(--radius);
   margin: 1.5rem 0;
 }

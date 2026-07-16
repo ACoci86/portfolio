@@ -1,0 +1,54 @@
+---
+// The AC monogram, inlined rather than loaded via <img> so each block can be
+// animated independently. Same artwork as public/logo.svg.
+// Decorative here: the surrounding link carries the accessible name.
+
+const BLOCKS = [
+  // A
+  { x: 348, y: 318, w: 104, h: 109, fill: "#a989ec" },
+  { x: 244, y: 427, w: 104, h: 112, fill: "#64cdaf" },
+  { x: 452, y: 427, w: 104, h: 112, fill: "#f76463" },
+  { x: 244, y: 539, w: 104, h: 113, fill: "#fec132" },
+  { x: 452, y: 539, w: 104, h: 113, fill: "#7a59d0" },
+  { x: 222, y: 652, w: 104, h: 113, fill: "#7a59d0" },
+  { x: 326, y: 652, w: 148, h: 113, fill: "#fd8b0f" },
+  { x: 474, y: 652, w: 104, h: 113, fill: "#64cdaf" },
+  { x: 222, y: 765, w: 104, h: 111, fill: "#64cdaf" },
+  { x: 474, y: 765, w: 104, h: 111, fill: "#f76463" },
+  // C
+  { x: 660, y: 427, w: 104, h: 112, fill: "#fec132" },
+  { x: 660, y: 539, w: 104, h: 113, fill: "#64cdaf" },
+  { x: 660, y: 652, w: 104, h: 113, fill: "#a989ec" },
+  { x: 764, y: 318, w: 104, h: 109, fill: "#7a59d0" },
+  { x: 868, y: 318, w: 104, h: 109, fill: "#3bacb6" },
+  { x: 972, y: 318, w: 104, h: 109, fill: "#f76463" },
+  { x: 764, y: 765, w: 104, h: 111, fill: "#f76463" },
+  { x: 868, y: 765, w: 104, h: 111, fill: "#fec132" },
+  { x: 972, y: 765, w: 104, h: 111, fill: "#7a59d0" },
+];
+
+// Tetris stacks from the floor up, so the lowest row lands first.
+const ROWS_BOTTOM_UP = [765, 652, 539, 427, 318];
+const delayFor = (y: number) => (ROWS_BOTTOM_UP.indexOf(y) * 0.07).toFixed(2);
+---
+
+<svg
+  class="logo"
+  viewBox="212 308 874 578"
+  width="68"
+  height="45"
+  aria-hidden="true"
+>
+  {
+    BLOCKS.map((b) => (
+      <rect
+        x={b.x}
+        y={b.y}
+        width={b.w}
+        height={b.h}
+        fill={b.fill}
+        style={`animation-delay:${delayFor(b.y)}s`}
+      />
+    ))
+  }
+</svg>

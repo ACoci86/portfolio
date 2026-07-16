@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
+import PixelBar from "../components/PixelBar.astro";
 
 // Each service carries a small inline icon (Feather-style SVG paths).
 const services = [
@@ -54,11 +55,64 @@ const featured = (await getCollection("projects"))
       Junior software developer and First Class Honours Level 8 graduate. I build
       full-stack web and mobile apps, turning ideas into clean, reliable code.
     </p>
-    <a class="button" href="/projects">View my work</a>
+    <div class="actions">
+      <a class="button" href="/projects">View my work</a>
+      <a class="button button-alt" href="mailto:alessiococi1986@gmail.com">
+        Contact me
+      </a>
+    </div>
   </section>
 
   <section id="about">
+    <h2>About</h2>
+    <PixelBar />
+    <div class="about">
+      <p>
+        I'm a junior software developer based in Waterford, Ireland, and I came
+        to engineering from an unusual direction.
+      </p>
+      <p>
+        For a decade I worked in technical localization and QA, shipping user
+        interfaces, software strings, help pages and mobile app content for
+        technology clients including Microsoft and Canva. It sat closer to
+        engineering than people tend to assume: XML and XLIFF file workflows,
+        regex-based validation, QA passes in Xbench, and bug reporting in Jira.
+        As a Senior Project Manager at CETRA I ran multilingual digital projects
+        across IT, healthcare, finance and government, coordinating clients and
+        teams against scope, budget and deadlines, and training new hires on the
+        tooling. Before that I supported sellers at Amazon and mentored
+        colleagues there.
+      </p>
+      <p>
+        The engineering side kept pulling at me, so I went and got the
+        qualification: a Higher Diploma in Science in Software Development (NFQ
+        Level 8), finished with First Class Honours. Java and OOP, algorithms and
+        data structures, databases, web and mobile development, cloud and
+        operating systems, networks, and agile delivery.
+      </p>
+      <p>
+        So I'm new to the job title, not to shipping software. I've spent years
+        hitting deadlines for international clients, finding the defects everyone
+        else missed, and explaining technical problems to people who don't think
+        in code. Now I do it with code.
+      </p>
+    </div>
+
+    <ul class="facts">
+      <li><strong>Based in</strong> Waterford, Ireland</li>
+      <li>
+        <strong>Education</strong> Higher Diploma in Science in Software
+        Development, NFQ Level 8, First Class Honours
+      </li>
+      <li>
+        <strong>Languages</strong> Italian (native), English, Spanish
+      </li>
+    </ul>
+  </section>
+
+  <section>
     <h2>What I do</h2>
+    <PixelBar />
     <div class="grid grid-2">
       {
         services.map((service) => (
@@ -83,6 +137,7 @@ const featured = (await getCollection("projects"))
 
   <section>
     <h2>Tech I work with</h2>
+    <PixelBar />
     <ul class="tech">
       {
         technologies.map((technology) => (
@@ -97,6 +152,7 @@ const featured = (await getCollection("projects"))
 
   <section id="projects">
     <h2>Featured projects</h2>
+    <PixelBar />
     <div class="grid">
       {
         featured.map((project) => (

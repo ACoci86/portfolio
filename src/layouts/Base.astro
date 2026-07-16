@@ -1,13 +1,21 @@
 ---
 import "../styles/global.css";
+import Logo from "../components/Logo.astro";
 
 const {
   title = "Alessio Coci | Junior Software Developer",
   description =
     "Alessio Coci. First Class Honours Level 8 Software Development graduate. Full-stack web & mobile, backend APIs and QA.",
+  // Pages can pass their own preview image, e.g. a project's featured image.
+  image,
 } = Astro.props;
 
 const year = new Date().getFullYear();
+
+// Link previews need absolute URLs, built from `site` in astro.config.mjs.
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const previewImage = new URL(image ?? "/og.png", Astro.site);
+const usingDefaultPreview = !image;
 ---
 
 <!doctype html>
@@ -16,12 +24,49 @@ const year = new Date().getFullYear();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Link previews: how the site looks pasted into WhatsApp, Slack, email. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Alessio Coci" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={previewImage} />
+    <meta property="og:image:alt" content={title} />
+    {
+      usingDefaultPreview && (
+        <>
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+        </>
+      )
+    }
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={previewImage} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/fonts/pixelify-sans.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <title>{title}</title>
+    <!-- Runs before first paint so the blocks never flash in before dropping. -->
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
   </head>
 
   <body>
     <header>
-      <a class="brand" href="/">AC</a>
+      <a class="brand" href="/" aria-label="Alessio Coci, home">
+        <Logo />
+      </a>
       <nav aria-label="Primary navigation">
         <a href="/#about">About</a>
         <a href="/projects">Projects</a>
@@ -35,11 +80,48 @@ const year = new Date().getFullYear();
 
     <footer id="contact">
       <p>© {year} Alessio Coci</p>
-      <p>
-        <a href="mailto:alessiococi1986@gmail.com">alessiococi1986@gmail.com</a>
-        {" · "}
-        <a href="https://github.com/ACoci86" target="_blank" rel="noreferrer">
-          GitHub
+      <p class="social">
+        <a
+          href="mailto:alessiococi1986@gmail.com"
+          aria-label="Email Alessio Coci"
+          title="alessiococi1986@gmail.com"
+        >
+          <svg
+            class="social-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+            ></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </a>
+        <a
+          href="https://github.com/ACoci86"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Alessio Coci on GitHub"
+          title="github.com/ACoci86"
+        >
+          <svg
+            class="social-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+            ></path>
+          </svg>
         </a>
       </p>
     </footer>

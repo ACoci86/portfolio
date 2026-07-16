@@ -3,6 +3,9 @@ dist/
 # generated types
 .astro/
 
+# local notes, not part of the site
+docs/
+
 # dependencies
 node_modules/
 

@@ -1,0 +1,28 @@
+---
+// The four coloured blocks under a section heading. Each block is its own
+// element so they can drop in one at a time, like falling Tetris pieces.
+// Purely decorative, so it is hidden from screen readers.
+---
+
+<div class="pixel-bar" aria-hidden="true">
+  <span></span><span></span><span></span><span></span>
+</div>
+
+<script>
+  // Drop the blocks in when the bar scrolls into view, once per bar.
+  const bars = document.querySelectorAll(".pixel-bar");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      }
+    },
+    { threshold: 1 },
+  );
+
+  for (const bar of bars) observer.observe(bar);
+</script>
