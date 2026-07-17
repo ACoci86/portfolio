@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
+import PixelArrow from "../../components/PixelArrow.astro";
 
 // Newest first.
 const projects = (await getCollection("projects")).sort(
@@ -25,8 +26,18 @@ const projects = (await getCollection("projects")).sort(
             <h3>
               <a href={`/projects/${project.id}`}>{project.data.title}</a>
             </h3>
+            {project.data.tech.length > 0 && (
+              <ul class="tech-chips">
+                {project.data.tech.map((name) => (
+                  <li>{name}</li>
+                ))}
+              </ul>
+            )}
             <p>{project.data.description}</p>
-            <a href={`/projects/${project.id}`}>Read more →</a>
+            <a class="pixel-link" href={`/projects/${project.id}`}>
+              Read more
+              <PixelArrow />
+            </a>
           </article>
         ))
       }

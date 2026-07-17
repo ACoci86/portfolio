@@ -33,6 +33,27 @@ content:
         label: Featured image
         type: image # upload/picker; saves to public/images, stores /images/... path
         required: false
+      # Fixed list rather than free text, so a project can't say "Node.js" while
+      # the homepage tiles say "Node". Add to `values` before using something new.
+      - name: tech
+        label: Tech used
+        type: select
+        required: false
+        options:
+          multiple: true
+          placeholder: Pick the tech this project used
+          values:
+            - Java
+            - TypeScript
+            - JavaScript
+            - Angular
+            - Ionic
+            - Capacitor
+            - Node
+            - Express
+            - SQL
+            - Astro
+            - Git
       - name: body
         label: Write-up
         type: rich-text # the Markdown body below the frontmatter

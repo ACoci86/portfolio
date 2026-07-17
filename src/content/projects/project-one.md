@@ -4,11 +4,15 @@ date: 2026-07-14
 description: An Android app for saving links into folders, with share-sheet support so you can stash a link from any app on your phone.
 repo: https://github.com/ACoci86/link-stash
 image: /images/link-stash-cover.png
+tech:
+  - Angular
+  - Ionic
+  - Capacitor
+  - TypeScript
+  - Java
 ---
 An Android app for saving links into folders, with share-sheet support so you can
 stash a link from any app on your phone.
-
-Angular · Ionic · Capacitor · TypeScript · Java
 
 ## Why I built it
 

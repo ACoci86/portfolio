@@ -18,6 +18,7 @@
   --purple: #7a59d0;
   --purple-light: #a989ec;
   --teal: #66ceb1;
+  --teal-deep: #3bacb6; /* the logo's darkest teal, the closest it has to blue */
   --yellow: #fec132;
   --coral: #f76463;
   --orange: #fd8b0f;
@@ -136,6 +137,103 @@ section > h2 {
   }
 }
 
+/* Images that build themselves out of blocks, then sharpen into the real ones,
+   taking turns. Without JS the first image just shows, and no blocks appear. */
+.pixel-reveal {
+  position: relative;
+  aspect-ratio: var(--aspect);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 6px 6px 0 var(--ink);
+  overflow: hidden;
+}
+
+.pixel-reveal-slide {
+  position: absolute;
+  inset: 0;
+  display: block;
+  opacity: 0;
+}
+
+.pixel-reveal-slide.is-active {
+  opacity: 1;
+}
+
+.pixel-reveal img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pixel-reveal-grid {
+  display: none;
+}
+
+.js .pixel-reveal-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr);
+}
+
+.js .pixel-reveal-grid span {
+  opacity: 0;
+}
+
+.js .pixel-reveal img {
+  opacity: 0;
+}
+
+.js .pixel-reveal.is-visible .is-active .pixel-reveal-grid span {
+  animation: pixel-drop 0.3s steps(4) forwards;
+}
+
+/* Once the blocks have landed, trade them for the real image. */
+.js .pixel-reveal.is-visible .is-active .pixel-reveal-grid {
+  animation: pixel-dissolve 0.45s steps(5) forwards;
+  animation-delay: var(--settled);
+}
+
+.js .pixel-reveal.is-visible .is-active img {
+  animation: pixel-resolve 0.45s steps(5) forwards;
+  animation-delay: var(--settled);
+}
+
+@keyframes pixel-dissolve {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes pixel-resolve {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Show the first image, finished, and never move it. */
+@media (prefers-reduced-motion: reduce) {
+  .js .pixel-reveal-grid {
+    display: none;
+  }
+
+  .js .pixel-reveal img {
+    opacity: 1;
+    animation: none;
+  }
+
+  .pixel-reveal-slide {
+    opacity: 0;
+  }
+
+  .pixel-reveal-slide:first-child {
+    opacity: 1;
+  }
+}
+
 /* Header */
 header {
   display: flex;
@@ -193,7 +291,9 @@ nav a {
   color: var(--muted);
   padding-bottom: 3px;
   border-bottom: 3px solid transparent;
-  transition: color 0.1s steps(2), border-color 0.1s steps(2);
+  transition:
+    color 0.1s steps(2),
+    border-color 0.1s steps(2);
 }
 
 nav a:hover {
@@ -202,8 +302,19 @@ nav a:hover {
 }
 
 /* Intro */
+/* Text left, the newest project's picture right. One column until there is
+   room for two, so the picture never squeezes the words. */
 .intro {
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
   padding: 2.5rem 0;
+}
+
+@media (min-width: 820px) {
+  .intro {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .intro p {
@@ -211,38 +322,69 @@ nav a:hover {
   color: var(--muted);
 }
 
+.intro-figure {
+  display: block;
+  /* The shadow sits outside the border, so leave it room. */
+  margin: 0 6px 6px 0;
+}
+
 /* About */
 .about p {
   color: var(--muted);
 }
 
+/* Prose left, the at-a-glance card right. One column until there is room. */
+.about-layout {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 880px) {
+  .about-layout {
+    grid-template-columns: 1fr 20rem;
+    gap: 3rem;
+  }
+}
+
+/* The at-a-glance card. */
 .facts {
   list-style: none;
-  padding: 0;
-  margin: 1.75rem 0 0;
+  padding: 1.5rem;
+  margin: 0;
   display: grid;
-  gap: 0.6rem;
+  gap: 1.5rem;
+  background: var(--border-tint, #f7f7fa);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 4px 4px 0 var(--ink);
   color: var(--muted);
   font-size: 0.95rem;
 }
 
-/* Two columns so a wrapping value stays lined up under itself,
-   rather than falling back to the left margin. */
 .facts li {
   display: grid;
-  grid-template-columns: 108px 1fr;
-  gap: 0.75rem;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
   align-items: start;
 }
 
+.facts .fact-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.1rem;
+  color: var(--accent);
+}
+
 .facts strong {
+  display: block;
+  margin-bottom: 0.2rem;
   color: var(--ink);
 }
 
 @media (max-width: 480px) {
-  .facts li {
-    grid-template-columns: 1fr;
-    gap: 0.15rem;
+  .facts {
+    padding: 1.25rem;
   }
 }
 
@@ -265,7 +407,9 @@ nav a:hover {
   border: 2px solid var(--ink);
   border-radius: var(--radius);
   box-shadow: 4px 4px 0 var(--ink);
-  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
+  transition:
+    transform 0.1s steps(2),
+    box-shadow 0.1s steps(2);
 }
 
 .button:hover {
@@ -297,7 +441,9 @@ nav a:hover {
   background: var(--background);
   border: 2px solid var(--ink);
   border-radius: var(--radius);
-  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
+  transition:
+    transform 0.1s steps(2),
+    box-shadow 0.1s steps(2);
 }
 
 .grid article:hover {
@@ -406,7 +552,9 @@ section > p > a {
   border-radius: var(--radius);
   font-size: 0.75rem;
   font-weight: 700;
-  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
+  transition:
+    transform 0.1s steps(2),
+    box-shadow 0.1s steps(2);
 }
 
 .tech img {
@@ -414,9 +562,16 @@ section > p > a {
   height: 36px;
 }
 
+/* Each tile hovers in its own colour, set per tech in index.astro. This is the
+   fallback if one is ever missing. */
+.tech li {
+  --tile-accent: var(--purple);
+}
+
 .tech li:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0 var(--accent);
+  border-color: var(--tile-accent);
+  box-shadow: 4px 4px 0 var(--tile-accent);
 }
 
 /* Footer */
@@ -447,7 +602,9 @@ footer a {
 
 .social a {
   display: flex;
-  transition: transform 0.1s steps(2), color 0.1s steps(2);
+  transition:
+    transform 0.1s steps(2),
+    color 0.1s steps(2);
 }
 
 .social a:hover {
@@ -460,15 +617,94 @@ footer a {
   height: 22px;
 }
 
+/* What a project was built with. Comes from each project's `tech` field, so
+   these follow the content rather than being written into the page. */
+.tech-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.tech-chips li {
+  padding: 0.15rem 0.5rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-family: var(--display);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
 /* Write-up page */
 .write-up {
   max-width: 680px;
+  margin-inline: auto; /* centre the column in the wider page */
 }
 
+/* Flex, not plain text, because the date and the Source link are different
+   sizes and would otherwise sit on mismatched baselines. */
 .write-up .meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-top: -0.25rem;
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+/* Links that carry a PixelArrow. The arrow jumps a whole pixel on hover
+   rather than gliding, to match the stepped motion on .button. */
+.pixel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--display);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.pixel-arrow {
+  width: 1.4em;
+  height: 0.7em;
+  flex: none;
+  transition: transform 0.1s steps(2);
+}
+
+.pixel-arrow.is-left {
+  transform: scaleX(-1);
+}
+
+.pixel-link:hover .pixel-arrow {
+  transform: translateX(3px);
+}
+
+.pixel-link:hover .pixel-arrow.is-left {
+  transform: scaleX(-1) translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-arrow {
+    transition: none;
+  }
+}
+
+/* "Source" link in a write-up's meta line, with the GitHub mark. Sized up a
+   little from the surrounding meta text so it reads as a thing to click. */
+.repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.repo-icon {
+  width: 1.2em;
+  height: 1.2em;
 }
 
 .write-up-image {

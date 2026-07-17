@@ -10,6 +10,9 @@ const projects = defineCollection({
     description: z.string(),
     repo: z.string().url().optional(),
     image: z.string().optional(), // e.g. "/images/daisy.jpg" (lives in public/)
+    // What the project was built with, picked from a fixed list in .pages.yml
+    // so the names stay spelled the same everywhere. Empty means no chips show.
+    tech: z.array(z.string()).default([]),
   }),
 });
 
