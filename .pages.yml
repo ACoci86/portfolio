@@ -53,6 +53,8 @@ content:
             - Express
             - SQL
             - Astro
+            - Leaflet
+            - Cloudflare
             - Git
       - name: body
         label: Write-up

@@ -718,6 +718,18 @@ footer a {
 }
 
 /* Side-by-side app screenshots in a write-up; stacks on narrow screens. */
+/* Any image written into a write-up body. Without the max-width these render
+   at their full pixel width and run off the side of the column. */
+.write-up p > img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+}
+
 .shots {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
