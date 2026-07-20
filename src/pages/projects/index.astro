@@ -14,7 +14,7 @@ const projects = (await getCollection("projects")).sort(
     <h1>Projects</h1>
     <p>Things I've built, and what I learned building them.</p>
 
-    <div class="grid">
+    <div class="grid grid-3">
       {
         projects.map((project) => (
           <article>

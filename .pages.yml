@@ -54,6 +54,7 @@ content:
             - SQL
             - Astro
             - Leaflet
+            - MapLibre
             - Cloudflare
             - Git
       - name: body

@@ -478,6 +478,20 @@ section > p > a {
   }
 }
 
+/* Three-up for the projects index, so cards stay a readable width however many
+   projects there are. Two-up in between, one on a phone. */
+@media (min-width: 560px) {
+  .grid-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 900px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .service-icon {
   width: 28px;
   height: 28px;
@@ -718,6 +732,25 @@ footer a {
 }
 
 /* Side-by-side app screenshots in a write-up; stacks on narrow screens. */
+/* Code blocks in a write-up. Astro highlights them but ships no layout, so the
+   padding, border and horizontal scroll for long lines are ours. */
+.write-up pre {
+  margin: 1.5rem 0;
+  padding: 1rem 1.15rem;
+  overflow-x: auto;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.write-up :not(pre) > code {
+  padding: 0.1rem 0.35rem;
+  background: var(--border);
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+
 /* Any image written into a write-up body. Without the max-width these render
    at their full pixel width and run off the side of the column. */
 .write-up p > img {
